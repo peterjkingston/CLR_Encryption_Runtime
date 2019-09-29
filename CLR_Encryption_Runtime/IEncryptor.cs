@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CLR_Encryption_Runtime
 {
-    interface IEncryptor
+    public interface IEncryptor
     {
-        byte[] Encrypt(string stringToEncrypt, byte[] key);
+        byte[] Encrypt(string stringToEncrypt, byte[] key, byte[] vector);
     }
 }

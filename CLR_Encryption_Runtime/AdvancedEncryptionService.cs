@@ -17,9 +17,9 @@ namespace CLR_Encryption_Runtime
             _aes = new AesManaged();
         }
 
-        public byte[] Encrypt(string stringToEncrypt, byte[] key)
+        public byte[] Encrypt(string stringToEncrypt, byte[] key, byte[] vector)
         {
-            ICryptoTransform encryptor = _aes.CreateEncryptor(key, _aes.IV);
+            ICryptoTransform encryptor = _aes.CreateEncryptor(key, vector);
             using (MemoryStream mStream = new MemoryStream())
             {
                 using (CryptoStream cStream = new CryptoStream(mStream, encryptor, CryptoStreamMode.Write))
@@ -33,9 +33,9 @@ namespace CLR_Encryption_Runtime
             }                            
         }
 
-        public string Decrypt(byte[] cipherText, byte[] key)
+        public string Decrypt(byte[] cipherText, byte[] key, byte[] vector)
         {
-            ICryptoTransform decryptor = _aes.CreateDecryptor(key, _aes.IV);
+            ICryptoTransform decryptor = _aes.CreateDecryptor(key, vector);
             using (MemoryStream mStream = new MemoryStream(cipherText))
             {
                 using (CryptoStream cStream = new CryptoStream(mStream, decryptor, CryptoStreamMode.Read))
@@ -48,10 +48,15 @@ namespace CLR_Encryption_Runtime
             }                                   
         }
 
-        public byte[] GetKey()
+        public byte[] GetKey(bool isPrivate)
         {
             _aes.GenerateKey();
             return _aes.Key;
+        }
+
+        public byte[] GetVector()
+        {
+            return _aes.IV;
         }
     }
 }

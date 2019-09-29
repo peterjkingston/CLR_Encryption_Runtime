@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CLR_Encryption_Runtime
 {
-    interface IKeyGenerator
+    public interface IKeyGenerator
     {
-        byte[] GetKey();
+        byte[] GetKey(bool isPrivate);
+        byte[] GetVector();
     }
 }
