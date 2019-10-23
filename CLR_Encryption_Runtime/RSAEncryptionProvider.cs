@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CLR_Encryption_Runtime
 {
-    class RSAEncryptionProvider : IKeyGenerator, IEncryptor, IDecryptor
+    public class RSAEncryptionProvider : IKeyGenerator, IEncryptor, IDecryptor
     {
         RSACryptoServiceProvider _rsa;
 
@@ -19,14 +19,16 @@ namespace CLR_Encryption_Runtime
 
         public string Decrypt(byte[] encryptedData, byte[] key, byte[] vector)
         {
+            UnicodeEncoding converter = new UnicodeEncoding();
             _rsa.FromXmlString(Encoding.UTF8.GetString(key));
-            return Encoding.UTF8.GetString( _rsa.Decrypt(encryptedData,false));
+            return converter.GetString( _rsa.Decrypt(encryptedData,false));
         }
 
         public byte[] Encrypt(string stringToEncrypt, byte[] key, byte[] vector)
         {
+            UnicodeEncoding converter = new UnicodeEncoding();
             _rsa.FromXmlString(Encoding.UTF8.GetString(key));
-            return _rsa.Encrypt(Encoding.UTF8.GetBytes(stringToEncrypt), false);
+            return _rsa.Encrypt(converter.GetBytes(stringToEncrypt), false);
         }
 
         public byte[] GetKey(bool isPrivate)
